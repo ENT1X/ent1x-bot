@@ -401,21 +401,28 @@
 
     .close-btn {
       margin-top: 32px;
-      padding: 12px 40px;
-      border: 1px solid var(--border);
+      padding: 14px 48px;
+      border: 1.5px solid var(--primary);
       border-radius: 60px;
       background: var(--glass);
-      color: var(--text);
+      color: var(--primary);
       font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
       transition: 0.3s;
     }
 
     .close-btn:active {
-      border-color: var(--primary);
-      color: var(--primary);
+      background: var(--gradient-1);
+      color: #000;
+      transform: scale(0.96);
+    }
+
+    .close-note {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
   </style>
 </head>
@@ -526,6 +533,7 @@
     <h2>Заявка отправлена!</h2>
     <p>Я свяжусь с вами в ближайшее время.</p>
     <button class="close-btn" id="closeBtn">Закрыть</button>
+    <div class="close-note">Если кнопка не работает, закройте окно вручную</div>
   </div>
 
   <script>
@@ -611,9 +619,12 @@
     }
 
     document.getElementById('closeBtn').addEventListener('click', function() {
-      if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.close();
-      }
+      try {
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.close();
+        }
+      } catch (_) {}
+      try { window.close(); } catch (_) {}
     });
 
     document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
