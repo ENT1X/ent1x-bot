@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ENT1X — Заказать</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0b0b14;
+      --bg-card: rgba(255,255,255,0.03);
+      --text: #eeeef2;
+      --text-muted: #7a7a8a;
+      --primary: #00e5ff;
+      --secondary: #7c3aed;
+      --accent: #f472b6;
+      --gradient: linear-gradient(135deg, #00e5ff, #7c3aed, #f472b6);
+      --gradient-1: linear-gradient(135deg, #00e5ff, #7c3aed);
+      --glass: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.07);
+      --shadow: 0 8px 32px rgba(0,0,0,0.5);
+      --glow: 0 0 24px rgba(0,229,255,0.12);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--gradient-1); border-radius: 2px; }
+
+    ::selection { background: var(--primary); color: #000; }
+
+    .header {
+      padding: 20px 20px 0;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      opacity: 0.15;
+    }
+
+    .logo {
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo .dev {
+      font-size: 0.75rem;
+      opacity: 0.4;
+      -webkit-text-fill-color: var(--text-muted);
+    }
+
+    .container {
+      padding: 20px 16px;
+      padding-bottom: calc(20px + var(--safe-bottom));
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 2px;
+      background: var(--gradient-1);
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    .services {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .service-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: 0.3s;
+      cursor: pointer;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .service-card:active {
+      transform: scale(0.98);
+    }
+
+    .service-card.selected {
+      border-color: var(--primary);
+      box-shadow: 0 0 24px rgba(0,229,255,0.1);
+    }
+
+    .service-card.selected::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      background: var(--gradient-1);
+      opacity: 0.15;
+      z-index: -1;
+    }
+
+    .service-card.popular {
+      border-color: rgba(0, 229, 255, 0.25);
+      box-shadow: 0 0 24px rgba(0, 229, 255, 0.06);
+    }
+
+    .service-card.popular::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      background: var(--gradient-1);
+      opacity: 0.08;
+      z-index: -1;
+    }
+
+    .service-card .badge {
+      position: absolute;
+      top: -10px;
+      right: 16px;
+      z-index: 2;
+      padding: 3px 12px;
+      border-radius: 60px;
+      background: var(--gradient-1);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 12px rgba(0, 229, 255, 0.25);
+    }
+
+    .service-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .service-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--gradient-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .service-info h3 {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .service-info .price {
+      font-size: 1.2rem;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .service-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .service-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .service-features span {
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 60px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .form-section {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-section h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: 0.3s;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 16px rgba(0,229,255,0.06);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a8a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    .form-group select option {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--gradient-1);
+      color: #000;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(0,229,255,0.2);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.97);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .submit-btn.loading {
+      pointer-events: none;
+    }
+
+    .status {
+      text-align: center;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      min-height: 1.5em;
+      transition: 0.3s;
+    }
+
+    .status.success { color: #34d399; }
+    .status.error { color: #f87171; }
+
+    .footer {
+      text-align: center;
+      padding: 16px 20px;
+      padding-bottom: calc(16px + var(--safe-bottom));
+      border-top: 1px solid var(--border);
+      color: rgba(255,255,255,0.15);
+      font-size: 0.75rem;
+    }
+
+    .telegram-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .success-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .success-screen.visible {
+      display: flex;
+    }
+
+    .success-screen .check {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--gradient-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: #000;
+      margin-bottom: 20px;
+      box-shadow: 0 0 40px rgba(0,229,255,0.2);
+    }
+
+    .success-screen h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .success-screen p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 280px;
+    }
+
+    .close-btn {
+      margin-top: 32px;
+      padding: 12px 40px;
+      border: 1px solid var(--border);
+      border-radius: 60px;
+      background: var(--glass);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .close-btn:active {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">ENT1X<span class="dev">.dev</span></div>
+  </div>
+
+  <div class="container" id="mainContent">
+    <div class="section-title">Выберите услугу</div>
+
+    <div class="services">
+      <div class="service-card" data-service="Сайт под ключ" data-price="от 15 000 ₽">
+        <div class="service-top">
+          <div class="service-icon"><i class="fas fa-globe"></i></div>
+          <div class="service-info">
+            <h3>Сайт под ключ</h3>
+            <div class="price">от 15 000 ₽</div>
+          </div>
+        </div>
+        <div class="service-desc">Адаптивный сайт с анимациями, SEO, формой связи.</div>
+        <div class="service-features">
+          <span>Адаптивная вёрстка</span>
+          <span>SEO</span>
+          <span>Анимации</span>
+        </div>
+      </div>
+
+      <div class="service-card popular" data-service="Интернет-магазин" data-price="от 35 000 ₽">
+        <span class="badge">Популярное</span>
+        <div class="service-top">
+          <div class="service-icon"><i class="fas fa-shopping-cart"></i></div>
+          <div class="service-info">
+            <h3>Интернет-магазин</h3>
+            <div class="price">от 35 000 ₽</div>
+          </div>
+        </div>
+        <div class="service-desc">Полный магазин с корзиной, оплатой и админкой.</div>
+        <div class="service-features">
+          <span>Каталог</span>
+          <span>Корзина</span>
+          <span>Оплата</span>
+          <span>Админка</span>
+        </div>
+      </div>
+
+      <div class="service-card" data-service="Telegram бот" data-price="от 10 000 ₽">
+        <div class="service-top">
+          <div class="service-icon"><i class="fab fa-telegram"></i></div>
+          <div class="service-info">
+            <h3>Telegram бот</h3>
+            <div class="price">от 10 000 ₽</div>
+          </div>
+        </div>
+        <div class="service-desc">Бот любой сложности с БД, API и админ-панелью.</div>
+        <div class="service-features">
+          <span>API</span>
+          <span>База данных</span>
+          <span>Админка</span>
+          <span>Деплой</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Оставьте заявку</h3>
+      <form id="orderForm">
+        <div class="form-group">
+          <label for="name">Ваше имя</label>
+          <input type="text" id="name" placeholder="Как к вам обращаться?" required>
+        </div>
+        <div class="form-group">
+          <label for="contact">Telegram или email</label>
+          <input type="text" id="contact" placeholder="@username или email@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="serviceSelect">Услуга</label>
+          <select id="serviceSelect">
+            <option value="Сайт под ключ">Сайт под ключ</option>
+            <option value="Интернет-магазин">Интернет-магазин</option>
+            <option value="Telegram бот">Telegram бот</option>
+            <option value="Другое">Другое</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="desc">Опишите задачу</label>
+          <textarea id="desc" rows="3" placeholder="Что нужно сделать?"></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span>Отправить</span>
+          <i class="fas fa-paper-plane"></i>
+        </button>
+        <div class="status" id="formStatus"></div>
+      </form>
+    </div>
+
+    <div class="footer">
+      ENT1X &copy; 2026
+      <br>
+      <a href="https://t.me/ENT1X52" target="_blank" class="telegram-link">
+        <i class="fab fa-telegram-plane"></i> @ENT1X52
+      </a>
+    </div>
+  </div>
+
+  <div class="success-screen" id="successScreen">
+    <div class="check"><i class="fas fa-check"></i></div>
+    <h2>Заявка отправлена!</h2>
+    <p>Я свяжусь с вами в ближайшее время.</p>
+    <button class="close-btn" id="closeBtn">Закрыть</button>
+  </div>
+
+  <script>
+    let selectedService = null;
+
+    document.querySelectorAll('.service-card').forEach(card => {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedService = this.dataset.service;
+        document.getElementById('serviceSelect').value = selectedService;
+        document.getElementById('serviceSelect').dispatchEvent(new Event('change'));
+      });
+    });
+
+    document.getElementById('serviceSelect').addEventListener('change', function() {
+      const val = this.value;
+      document.querySelectorAll('.service-card').forEach(c => {
+        c.classList.toggle('selected', c.dataset.service === val);
+      });
+    });
+
+    const form = document.getElementById('orderForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formStatus = document.getElementById('formStatus');
+    const mainContent = document.getElementById('mainContent');
+    const successScreen = document.getElementById('successScreen');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const service = document.getElementById('serviceSelect').value;
+      const desc = document.getElementById('desc').value.trim();
+
+      if (!name || !contact) return;
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+      submitBtn.querySelector('span').textContent = 'Отправка...';
+      formStatus.textContent = '';
+      formStatus.className = 'status';
+
+      const data = { name, contact, service, desc };
+
+      try {
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.sendData(JSON.stringify(data));
+        } else {
+          setTimeout(() => {
+            showSuccess();
+          }, 500);
+        }
+      } catch (err) {
+        formStatus.textContent = 'Ошибка отправки';
+        formStatus.className = 'status error';
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+        submitBtn.querySelector('span').textContent = 'Отправить';
+      }
+    });
+
+    function showSuccess() {
+      mainContent.style.display = 'none';
+      successScreen.classList.add('visible');
+      if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.ready();
+      }
+    }
+
+    function showMain() {
+      mainContent.style.display = 'block';
+      successScreen.classList.remove('visible');
+      form.reset();
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      submitBtn.querySelector('span').textContent = 'Отправить';
+      formStatus.textContent = '';
+      formStatus.className = 'status';
+    }
+
+    document.getElementById('closeBtn').addEventListener('click', function() {
+      if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.close();
+      }
+    });
+
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
+  </script>
+</body>
+</html>
