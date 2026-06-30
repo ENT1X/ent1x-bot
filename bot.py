@@ -24,7 +24,7 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
-MINIAPP_URL = "https://cool-capybara-69c310.netlify.app"  # <-- ЗАМЕНИТЕ НА РЕАЛЬНЫЙ URL
+MINIAPP_URL = "https://ent1x.github.io/ent1x-bot/miniapp.html"
 
 
 def main_kb() -> ReplyKeyboardMarkup:
