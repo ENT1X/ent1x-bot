@@ -49,8 +49,13 @@ async def cmd_start(message: types.Message):
     await message.answer(text, reply_markup=main_kb())
 
 
-@dp.message(F.web_app_data)
+@dp.message()
 async def webapp_data_handler(message: types.Message):
+    if not message.web_app_data:
+        return
+
+    logging.info(f"Получены web_app_data от @{message.from_user.username or message.from_user.id}")
+
     try:
         data = json.loads(message.web_app_data.data)
     except json.JSONDecodeError:
