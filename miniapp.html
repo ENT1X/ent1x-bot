@@ -454,6 +454,13 @@
 
     cards.forEach(function(card) {
       card.addEventListener('click', function() {
+        if (this.classList.contains('selected')) {
+          this.classList.remove('selected');
+          selectedService = null;
+          statusHint.innerHTML = '👆 Нажми на услугу, чтобы выбрать';
+          contactBtn.href = 'https://t.me/ENT1X52';
+          return;
+        }
         cards.forEach(function(c) { c.classList.remove('selected'); });
         this.classList.add('selected');
         selectedService = this.dataset.service;
